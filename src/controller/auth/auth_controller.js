@@ -1,7 +1,7 @@
 const { createAccount, login } = require("../../services/auth/auth_service");
 
 const router = require("express").Router();
-router.get("/signup", async (req, res) => await createAccount(req, res));
-router.get("/signin", async (req, res) => await login(req, res));
+router.post("/signup", async (req, res) => await createAccount(req, res));
+router.post("/signin", async (req, res) => await login(req, res));
 
 module.exports = router;

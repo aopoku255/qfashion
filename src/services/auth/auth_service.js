@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken");
 
 async function createAccount(req, res) {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, termsAndConditions } =
+      req.body;
 
     // 1️⃣ Validate required fields
     if (!firstName || !lastName || !email || !password) {
@@ -27,18 +28,18 @@ async function createAccount(req, res) {
       lastName,
       email,
       password,
+      termsAndConditions,
     });
 
     // 4️⃣ Response (passwordHash excluded by default scope)
     return res.status(201).json({
       message: "Account created successfully",
-      user,
     });
   } catch (error) {
     console.error("Create account error:", error);
 
     return res.status(500).json({
-      message: error?.errors[0]?.message || "Failed to create account",
+      message: "Failed to create account",
     });
   }
 }

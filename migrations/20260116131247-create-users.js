@@ -43,6 +43,11 @@ module.exports = {
         allowNull: false,
         defaultValue: "pending",
       },
+      terms_and_conditions: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
 
       // verification + recovery
       email_verified_at: {

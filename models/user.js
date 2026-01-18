@@ -60,6 +60,13 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "pending",
       },
 
+      termsAndConditions: {
+        type: DataTypes.BOOLEAN,
+        field: "terms_and_conditions",
+        allowNull: false,
+        defaultValue: false,
+      },
+
       // verification + recovery
       emailVerifiedAt: {
         type: DataTypes.DATE,
@@ -168,7 +175,7 @@ module.exports = (sequelize, DataTypes) => {
 
             if (!strong.test(value)) {
               throw new Error(
-                "Password must include uppercase, lowercase, number and symbol"
+                "Password must include uppercase, lowercase, number and symbol",
               );
             }
           },
@@ -224,7 +231,7 @@ module.exports = (sequelize, DataTypes) => {
           attributes: { include: ["passwordHash"] },
         },
       },
-    }
+    },
   );
 
   /**
