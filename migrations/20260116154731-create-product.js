@@ -23,7 +23,7 @@ module.exports = {
           "SLIPPERS",
           "SPRAY",
           "JEWELLERY",
-          "OTHER"
+          "OTHER",
         ),
         allowNull: false,
         defaultValue: "OTHER",
@@ -83,8 +83,16 @@ module.exports = {
         field: "meta_description",
       },
 
-      createdAt: { type: Sequelize.DATE, allowNull: false },
-      updatedAt: { type: Sequelize.DATE, allowNull: false },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        field: "created_at",
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        field: "updated_at",
+      },
     });
 
     await queryInterface.addIndex("products", ["category"]);
