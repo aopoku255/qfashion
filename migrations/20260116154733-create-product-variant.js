@@ -32,8 +32,16 @@ module.exports = {
 
       stock: { type: Sequelize.INTEGER, allowNull: false, defaultValue: 0 },
 
-      createdAt: { type: Sequelize.DATE, allowNull: false },
-      updatedAt: { type: Sequelize.DATE, allowNull: false },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        field: "created_at",
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        field: "updated_at",
+      },
     });
 
     await queryInterface.addIndex("product_variants", ["product_id"]);

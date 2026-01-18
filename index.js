@@ -5,6 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const session = require("express-session");
 const csrf = require("csurf");
+const path = require("path");
 const router = require("./src/routes/routes");
 
 const app = express();
@@ -17,7 +18,7 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 app.use(cookieParser());
@@ -34,8 +35,10 @@ app.use(
       sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24,
     },
-  })
+  }),
 );
+
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 const csrfProtection = csrf({
   cookie: false,

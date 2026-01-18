@@ -84,6 +84,13 @@ async function login(req, res) {
     // 7) Return safe user object (remove secrets)
     const safeUser = await User.findByPk(user.id); // defaultScope excludes passwordHash
 
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
     return res.status(200).json({
       message: "Login successful",
       token,
