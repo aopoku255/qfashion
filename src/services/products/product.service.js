@@ -9,6 +9,7 @@ const {
 const {
   sequelize,
   Product,
+  Category,
   ProductImage,
   ProductVariant,
 } = require("../../../models");
@@ -17,12 +18,15 @@ const { uploadImageToFirebase } = require("../../utils/firebaseUpload");
 
 async function createProduct(req, res) {
   try {
-    // multer files
     const files = Array.isArray(req.files)
       ? req.files
       : req.file
         ? [req.file]
         : [];
+
+    if (!req.body.categoryId) {
+      return res.status(400).json({ message: "categoryId is required" });
+    }
 
     const metaTitle =
       req.body.metaTitle && req.body.metaTitle.trim().length
@@ -34,7 +38,6 @@ async function createProduct(req, res) {
         ? req.body.metaDescription
         : (req.body.description ?? null);
 
-    // variants might come as JSON string from form-data
     const variants = parseJsonSafe(req.body.variants, []);
     const hasVariants = Array.isArray(variants) && variants.length > 0;
 
@@ -43,12 +46,13 @@ async function createProduct(req, res) {
       : Number(req.body.stock ?? 0);
 
     const product = await sequelize.transaction(async (t) => {
-      // 1) Create Product
       const created = await Product.create(
         {
           name: req.body.name,
           slug: req.body.slug,
-          category: req.body.category,
+
+          // ✅ FIXED
+          categoryId: req.body.categoryId,
 
           description: req.body.description ?? null,
           brand: req.body.brand ?? null,
@@ -79,7 +83,6 @@ async function createProduct(req, res) {
         { transaction: t },
       );
 
-      // 2) Save Product Images
       if (files.length) {
         const imagesPayload = files.map((file, index) => ({
           productId: created.id,
@@ -91,26 +94,6 @@ async function createProduct(req, res) {
         await ProductImage.bulkCreate(imagesPayload, { transaction: t });
       }
 
-      // 2) Save Product Images (Firebase)
-      // if (files.length) {
-      //   const uploads = await Promise.all(
-      //     files.map((file) =>
-      //       uploadImageToFirebase({ file, folder: "products" }),
-      //     ),
-      //   );
-
-      //   const imagesPayload = uploads.map((u, index) => ({
-      //     productId: created.id,
-      //     url: u.url,
-      //     storagePath: u.storagePath, // ✅ store this!
-      //     alt: req.body.alt ?? created.name ?? null,
-      //     sortOrder: index,
-      //   }));
-
-      //   await ProductImage.bulkCreate(imagesPayload, { transaction: t });
-      // }
-
-      // 3) Save Variants
       if (Array.isArray(variants) && variants.length) {
         const variantsPayload = variants.map((v) => ({
           productId: created.id,
@@ -127,9 +110,9 @@ async function createProduct(req, res) {
       return created;
     });
 
-    // Return with associations
     const full = await Product.findByPk(product.id, {
       include: [
+        { model: Category, as: "category" },
         { model: ProductImage, as: "images" },
         { model: ProductVariant, as: "variants" },
       ],
@@ -427,9 +410,9 @@ async function getAllProducts(req, res) {
 
     if (search) {
       where[Op.or] = [
-        { name: { [Op.iLike]: `%${search}%` } },
-        { description: { [Op.iLike]: `%${search}%` } },
-        { brand: { [Op.iLike]: `%${search}%` } },
+        { name: { [Op.like]: `%${search}%` } },
+        { description: { [Op.like]: `%${search}%` } },
+        { brand: { [Op.like]: `%${search}%` } },
       ];
     }
 
@@ -448,6 +431,10 @@ async function getAllProducts(req, res) {
     const { rows, count } = await Product.findAndCountAll({
       where,
       include: [
+        {
+          model: Category,
+          as: "category",
+        },
         {
           model: ProductImage,
           as: "images",
@@ -487,6 +474,7 @@ async function getProduct(req, res) {
 
     const product = await Product.findByPk(id, {
       include: [
+        { model: Category, as: "category" },
         {
           model: ProductImage,
           as: "images",
