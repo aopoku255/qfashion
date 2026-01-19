@@ -21,20 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      category: {
-        type: DataTypes.ENUM(
-          "DRESSES",
-          "TROUSERS",
-          "HOODIES",
-          "SNEAKERS",
-          "BAGS",
-          "SLIPPERS",
-          "SPRAY",
-          "JEWELLERY",
-          "OTHER"
-        ),
+      categoryId: {
+        type: DataTypes.UUID,
         allowNull: false,
-        defaultValue: "OTHER",
+        field: "category_id",
       },
 
       description: { type: DataTypes.TEXT, allowNull: true },
@@ -96,10 +86,14 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "products",
       underscored: true,
       timestamps: true,
-    }
+    },
   );
 
   Product.associate = (models) => {
+    Product.belongsTo(models.Category, {
+      foreignKey: "categoryId",
+      as: "category",
+    });
     Product.hasMany(models.ProductImage, {
       foreignKey: "productId",
       as: "images",
