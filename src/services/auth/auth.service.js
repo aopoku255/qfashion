@@ -28,6 +28,8 @@ async function createAccount(req, res) {
       lastName,
       email,
       password,
+      status: req.body?.status || "PENDING",
+      role: req.body?.role || "CUSTOMER",
       termsAndConditions,
     });
 
@@ -93,8 +95,9 @@ async function login(req, res) {
 
     return res.status(200).json({
       message: "Login successful",
+      status: "success",
       token,
-      user: safeUser,
+      data: safeUser,
     });
   } catch (error) {
     console.error("Login error:", error);
