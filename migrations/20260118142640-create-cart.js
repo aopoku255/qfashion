@@ -30,6 +30,14 @@ module.exports = {
         allowNull: false,
         defaultValue: "GHS",
       },
+      option: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      size: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
 
       created_at: {
         type: Sequelize.DATE,

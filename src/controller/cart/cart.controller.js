@@ -1,3 +1,5 @@
+const { ensureSession } = require("../../middleware/cookieMiddleWare");
+const { csrfProtect } = require("../../middleware/verifyCSRF");
 const {
   addItemsToCart,
   clearCart,
@@ -6,8 +8,8 @@ const {
 
 const router = require("express").Router();
 
-router.post("/item", addItemsToCart);
-router.post("/clear", clearCart);
-router.post("/", getCartItems);
+router.post("/add", ensureSession, csrfProtect, addItemsToCart);
+router.post("/clear", ensureSession, csrfProtect, clearCart);
+router.post("/", ensureSession, csrfProtect, getCartItems);
 
 module.exports = router;

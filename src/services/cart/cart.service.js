@@ -104,6 +104,8 @@ async function addItemsToCart(req, res) {
             guestId: userId ? null : guestId,
             status: "active",
             currency: req.body.currency ?? "GHS", // optional if you have this
+            option: req.body.option ?? null,
+            size: req.body.size ?? null,
           },
           { transaction: t },
         );

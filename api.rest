@@ -2,8 +2,8 @@ POST http://127.0.0.1:8081/api/auth/signup
 Content-Type: "application/json"
 
 {
-    "firstName": "Andrews",
-    "lastName": "Opoku",
-    "email": "aopoku255@gmail.com",
-    "password": "Prof@0545"
+  "firstName": "Andrews",
+  "lastName": "Opoku",
+  "email": "aopoku255@gmail.com",
+  "password": "Prof@0545"
 }

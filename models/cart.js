@@ -32,6 +32,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: "GHS",
       },
+      option: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
+      size: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
     },
     {
       tableName: "carts",
