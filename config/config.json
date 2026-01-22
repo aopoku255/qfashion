@@ -1,10 +1,11 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "qfashion",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "qfashion",
+    "password": "QFashion@2026",
+    "database": "q-fashion",
+    "host": "130.211.237.55",
+    "dialect": "mysql",
+    "port": 3306
   },
   "test": {
     "username": "root",
@@ -14,10 +15,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "qfashion",
+    "password": "QFashion@2026",
+    "database": "q-fashion",
+    "host": "130.211.237.55",
+    "dialect": "mysql",
+    "port": 3306
   }
 }
