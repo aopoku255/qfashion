@@ -17,3 +17,4 @@ node_modules
 .pnp.*
 src/config/firebase/*.json
 uploads/
+.env

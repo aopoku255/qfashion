@@ -1,0 +1,31 @@
+require("dotenv").config();
+
+module.exports = {
+  development: {
+    username: process.env.DB_USER || "qfashion",
+    password: process.env.DB_PASSWORD || "QFashion@2026",
+    database: process.env.DB_NAME || "q-fashion",
+    host: process.env.DB_HOST || "130.211.237.55",
+    dialect: "mysql",
+    port: 3306,
+  },
+
+  test: {
+    username: "root",
+    password: null,
+    database: "database_test",
+    host: "127.0.0.1",
+    dialect: "mysql",
+  },
+
+  production: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    dialect: "mysql",
+    dialectOptions: {
+      socketPath: `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`,
+    },
+    logging: false,
+  },
+};
